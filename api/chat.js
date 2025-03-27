@@ -1,16 +1,18 @@
-export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+// This is your Vercel serverless function (Node.js)
+// Save this as `api/chat.js` when setting up your Vercel project
 
-  // CORS preflight request
-  if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
+export default async function handler(req, res) {
+  // Always respond with CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
   }
 
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Only POST requests allowed" });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Only POST requests allowed' });
   }
 
   const { message } = req.body;
@@ -44,7 +46,7 @@ If the user asks something outside your knowledge, politely suggest they email h
           { role: "user", content: message },
         ],
         temperature: 0.7,
-      }),
+      })
     });
 
     const data = await response.json();
@@ -52,7 +54,7 @@ If the user asks something outside your knowledge, politely suggest they email h
     res.status(200).json({ reply });
 
   } catch (error) {
-    console.error("Server Error:", error);
-    res.status(500).json({ error: "Something went wrong." });
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong.' });
   }
 }
