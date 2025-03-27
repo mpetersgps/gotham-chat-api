@@ -19,7 +19,10 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-4",
         messages: [
-          { role: "system", content: "You are a helpful, friendly assistant for Gotham Production Studios. Answer in a conversational tone." },
+          {
+            role: "system",
+            content: "You are a friendly and knowledgeable assistant for Gotham Production Studios. Answer questions about services, pricing, hours, booking, and policies. Be clear, conversational, and confident. If the question is unrelated, politely suggest they email hello@gothamproductionstudios.com."
+          },
           { role: "user", content: message },
         ],
         temperature: 0.7,
