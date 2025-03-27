@@ -1,10 +1,13 @@
+// This is your Vercel serverless function (Node.js)
+// Save this as `api/chat.js` when setting up your Vercel project
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).end(); // Pre-flight CORS check
+    return res.status(200).end();
   }
 
   if (req.method !== 'POST') {
@@ -26,7 +29,18 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "system",
-            content: "You are a friendly and knowledgeable assistant for Gotham Production Studios. Answer questions about services, pricing, hours, booking, and policies. Be clear, conversational, and confident. If the question is unrelated, politely suggest they email hello@gothamproductionstudios.com."
+            content: `You are a friendly and knowledgeable assistant for Gotham Production Studios. Answer questions about services, pricing, hours, booking, and policies. You know the following information:
+
+- Studio rental (audio only): $80/hour (includes engineer to start/stop recording, microphones for up to 4 people, headphones, audio delivery within 24 hours)
+- Video recording: $60/hour per camera
+- Engineer+: $60/hour (hands-on support during session)
+- Multitrack audio: $10/hour (must be selected to receive separate tracks)
+- Green Room access: $300/day
+- Cancellations/rescheduling must be done 48+ hours in advance for refunds
+- Operating hours: Monday–Friday, 10 AM – 6 PM
+- Sessions can be booked online at https://www.gothamproductionstudios.com/studios
+
+If the user asks something outside your knowledge, politely suggest they email hello@gothamproductionstudios.com.`
           },
           { role: "user", content: message },
         ],
